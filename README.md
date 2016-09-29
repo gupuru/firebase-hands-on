@@ -17,7 +17,7 @@
 
 - 本家
   
-  -https://firebase.google.com/docs/cloud-messaging/
+  - https://firebase.google.com/docs/cloud-messaging/
 
 - 日本語の解説サイト
   - http://gihyo.jp/dev/serial/01/firebase/0009
