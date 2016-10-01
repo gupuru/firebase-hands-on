@@ -166,3 +166,209 @@ curl --header "Authorization: key=AIzaSyDGrPny1Cfb2m4cXzrSUoeguQidTc7xzs8" \
 ![inline](img/notifications.png)
 
 ---
+
+# [fit] Authentication
+
+---
+
+# Authentication
+
+- ログイン周り
+- メアド, 匿名アカウント, Google, Facebook, Twitter, GitHubなどに対応
+- 無料
+- FirebaseUIを使えば、uiなども簡単に実装できる
+- iOS, Android, Web
+
+---
+
+![inline](img/auth_settings.png)
+
+---
+
+```
+compile 'com.firebaseui:firebase-ui-auth:0.6.0'
+```
+
+```
+ FirebaseAuth auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() != null) {
+            //ログイン済み
+        } else {
+          startActivityForResult(
+                    AuthUI.getInstance().createSignInIntentBuilder().build(),
+                    RC_SIGN_IN);
+        }
+```
+
+```
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            if (resultCode == RESULT_OK) {
+                // ログイン成功
+            }
+        }
+    }
+```
+---
+
+![inline](img/auth_db.png)
+
+---
+
+# [fit] Realtime Database
+
+---
+
+# Realtime Database
+
+- NoSQL JSON データベース
+- リアルタイム同期(オフライン対応)
+- iOS, Android, Web
+- 有料(無料枠あり)
+
+---
+
+![inline](img/database_rule.png)
+
+---
+
+```
+pod 'Firebase/Database'
+```
+
+```
+import UIKit
+import Firebase
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+    var window: UIWindow?
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        //追加
+        FIRApp.configure()
+        return true
+    }
+
+}
+
+```
+
+---
+
+```swift
+import UIKit
+import FirebaseDatabase
+
+class ViewController: UIViewController {
+
+    let rootRef = FIRDatabase.database().reference()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        //読み込み    
+        rootRef.observe(.value, with: { snapshot in
+            print("\(snapshot.key) -> \(snapshot.value)")
+        })
+        
+        //書き込み
+        rootRef.child("food").setValue("りんごさま")
+
+    }
+
+}
+```
+
+---
+
+![inline](img/database.png)
+
+---
+
+# [fit]  Storage
+
+---
+
+#  Storage
+
+- ストレージ(S3に近いかも)
+- 画像, 動画, 音声などのダウンロード, アップロード
+- iOS, Android, Web
+- 有料(無料枠あり)
+
+---
+
+```ruby
+pod 'Firebase/Storage'
+```
+### あとは他と同じ
+---
+
+## アップロード
+
+```swift
+import FirebaseStorage
+
+class ViewController: UIViewController {
+    
+    let storage = FIRStorage.storage()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+   
+        let storageRef = storage.reference(forURL: "gs://fir-handson-ce2a8.appspot.com")
+
+        if let data = UIImagePNGRepresentation(UIImage(named: "ie")!) {
+            let riversRef = storageRef.child("images/ie.png")
+            riversRef.put(data, metadata: nil, completion: { metaData, error in
+                print(metaData)
+                print(error)
+            })
+        }
+    }
+}
+```
+
+---
+
+![inline](img/storage_console.png)
+
+---
+
+## ダウンロード
+
+```swift
+
+import FirebaseStorage
+
+class ViewController: UIViewController {
+    
+    let storage = FIRStorage.storage()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        let storageRef = storage.reference(forURL: "gs://fir-handson-ce2a8.appspot.com")
+
+        let ieRef = storageRef.child("images/hogehoge.png")        
+        ieRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) -> Void in
+            if (error != nil) {
+                print(error)
+            } else {
+                let image: UIImage! = UIImage(data: data!)
+            }
+        }
+        
+    }
+}
+```
+
+---
+
+![inline](img/storage_ios.png)
+
+---
+
