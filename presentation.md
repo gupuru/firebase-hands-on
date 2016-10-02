@@ -547,6 +547,18 @@ remoteConfig = FirebaseRemoteConfig.getInstance();
 
 ---
 
+## 導入
+
+```
+compile 'com.google.firebase:firebase-invites:9.6.1'
+```
+
+---
+
+![inline](img/links.png)
+
+---
+
 #[fit] Invites
 
 ---
@@ -559,6 +571,81 @@ remoteConfig = FirebaseRemoteConfig.getInstance();
 
 ---
 
+## 導入
+
+```
+compile 'com.google.firebase:firebase-invites:9.6.1'
+```
+
+※Dynamic Linksの有効が必要
+
+---
+
+## 招待
+
+```java
+
+Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
+            .setMessage(getString(R.string.invitation_message))
+            .setDeepLink(Uri.parse(getString(R.string.invitation_deep_link)))
+            .setCustomImage(Uri.parse(getString(R.string.invitation_custom_image)))
+            .setCallToActionText(getString(R.string.invitation_cta))
+            .build();
+    startActivityForResult(intent, REQUEST_INVITE);
+
+```
+
+## 結果
+
+```java
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+
+    if (requestCode == REQUEST_INVITE) {
+        if (resultCode == RESULT_OK) {
+            String[] ids = AppInviteInvitation.getInvitationIds(resultCode, data);
+            for (String id : ids) {
+                Log.d(TAG, "onActivityResult: sent invitation " + id);
+            }
+        }
+    }
+}
+```
+
+---
+
+## 受信
+
+```java
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+
+    mGoogleApiClient = new GoogleApiClient.Builder(this)
+            .addApi(AppInvite.API)
+            .enableAutoManage(this, this)
+            .build();
+
+    boolean autoLaunchDeepLink = true;
+    AppInvite.AppInviteApi.getInvitation(mGoogleApiClient, this, autoLaunchDeepLink)
+            .setResultCallback(
+                    new ResultCallback<AppInviteInvitationResult>() {
+                        @Override
+                        public void onResult(AppInviteInvitationResult result) {
+                            if (result.getStatus().isSuccess()) {
+
+                                Intent intent = result.getInvitationIntent();
+                                String deepLink = AppInviteReferral.getDeepLink(intent);
+                                String invitationId = AppInviteReferral.getInvitationId(intent);
+
+                            }
+                        }
+                    });
+}
+```
+
+---
+
 # [fit] まとめ
 
 ---
@@ -567,10 +654,8 @@ remoteConfig = FirebaseRemoteConfig.getInstance();
 
 ---
 
-というか、今回まとめるの結構疲れた...
+## というか、今回まとめるの結構疲れた...
 
 ---
 
 # [fit] ご清聴、ありがとうございました！
-
----

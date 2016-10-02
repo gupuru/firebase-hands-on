@@ -102,7 +102,7 @@
 - 本家
 
  - https://firebase.google.com/docs/app-indexing/
- 
+
 ## Dynamic Links
 
 - 本家
@@ -118,3 +118,7 @@
 - 本家
 
   - https://firebase.google.com/docs/invites/
+
+- 日本語の解説サイト
+
+  - http://www.seohacks.net/basic/terms/appindexing/
