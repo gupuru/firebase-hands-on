@@ -102,6 +102,7 @@
 - 本家
 
  - https://firebase.google.com/docs/app-indexing/
+ - https://firebase.google.com/docs/app-indexing/android/test?hl=ja
 
 - 日本語の解説サイト
 
