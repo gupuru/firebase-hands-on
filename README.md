@@ -103,6 +103,10 @@
 
  - https://firebase.google.com/docs/app-indexing/
 
+- 日本語の解説サイト
+
+ - http://qiita.com/mmusasabi/items/fd35037aecc1772dd11b
+
 ## Dynamic Links
 
 - 本家

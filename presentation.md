@@ -535,6 +535,35 @@ remoteConfig = FirebaseRemoteConfig.getInstance();
 
 ---
 
+##　ディープリンクの設定
+
+```xml
+ <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="https"
+                    android:host="fir-sample-51a1e.firebaseapp.com" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+            </intent-filter>
+        </activity>
+```
+
+---
+
+## テスト
+
+```
+ adb shell am start -a android.intent.action.VIEW -d "url" com.example.hoe
+```
+
+---
+
 #[fit] Dynamic Links
 
 ---
