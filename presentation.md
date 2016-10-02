@@ -7,17 +7,25 @@
 
 **新見 晃平**
 
-福岡にある株式会社セフリという会社で、[YAMAP](https://yamap.co.jp/)のAndroidアプリを作っている**iOS**エンジニアです。
-最近は、Docker, TensorFlow, Angular 2などやっていてiOS全然できてない（泣）
+株式会社セフリという会社で、[YAMAP](https://yamap.co.jp/)のAndroidアプリを作っている**iOS**エンジニアです。
+最近は、TensorFlow, Docker, Angular2などやっていてiOS全然できてない（泣）
 
 - Twitter: @gupuru
 - GitHub: gupuru
 
 ---
 
+# [fit] セフリは、どんな企業かと言うと…社長が犬です！
+
+![inline](img/kaizyuu.jpg)
+
+---
+
 # [fit] Firebaseって、何？
 
 ---
+
+# Firebase
 
 - mBaaS
 - Googleが運営しているサービス
@@ -79,9 +87,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 ---
 
-# Cloud Messaging
+# [fit] Cloud Messaging
 
 ---
+
+# Cloud Messaging
 
 - プッシュ通知
 - iOS, Android, Web
@@ -90,7 +100,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 ---
 
-```
+```gradle
 apply plugin: 'com.android.application'
 
 dependencies {
@@ -103,7 +113,7 @@ apply plugin: 'com.google.gms.google-services'
 
 ## token取得
 
-```
+```java
 FirebaseInstanceId.getInstance().getToken();
 ```
 
@@ -111,7 +121,7 @@ FirebaseInstanceId.getInstance().getToken();
 
 ## Notification Message
 
-```
+```js
 {
   "to" : "HHwgIpoDKCIZvvDMExUdFQ3P1...",
   "notification" : {
@@ -133,7 +143,7 @@ curl --header "Authorization: key=AIzaSyDGrPny1Cfb2m4cXzrSUoeguQidTc7xzs8" \
 
 ## Data Message
 
-```
+```js
 {
   "to" : "xUdFQ3P1...",
   "data" : {
@@ -151,6 +161,10 @@ curl --header "Authorization: key=AIzaSyDGrPny1Cfb2m4cXzrSUoeguQidTc7xzs8" \
      -d "{\"to\": \"...aJevN_VwU0Y\",\"priority\":\"high\",\"data\": {\"custom_title\": \"this is custom title\", \"custom_body\": \"this is custom body\", \"icon\": \"ic_stat_ic_notification\"}}"
 
 ```
+
+---
+
+# [fit] Notifications
 
 ---
 
@@ -185,11 +199,11 @@ curl --header "Authorization: key=AIzaSyDGrPny1Cfb2m4cXzrSUoeguQidTc7xzs8" \
 
 ---
 
-```
+```gradle
 compile 'com.firebaseui:firebase-ui-auth:0.6.0'
 ```
 
-```
+```java
  FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
             //ログイン済み
@@ -200,7 +214,7 @@ compile 'com.firebaseui:firebase-ui-auth:0.6.0'
         }
 ```
 
-```
+```java
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
@@ -237,7 +251,7 @@ compile 'com.firebaseui:firebase-ui-auth:0.6.0'
 pod 'Firebase/Database'
 ```
 
-```
+```swift
 import UIKit
 import Firebase
 
@@ -372,3 +386,191 @@ class ViewController: UIViewController {
 
 ---
 
+# [fit] Hosting
+
+---
+
+#  Hosting
+
+- Webサイト公開
+- HTTP/2, SSL
+- 有料(無料枠あり)
+- 独自ドメイン可能(無料)
+
+---
+
+## 導入
+
+```
+npm install -g firebase-tools
+```
+
+## 初期化
+
+```
+firebase init
+```
+
+---
+
+![inline](img/hosting.png)
+
+---
+
+## 公開
+
+```
+firebase deploy
+```
+
+## 確認
+
+```
+firebase open
+```
+
+---
+
+# [fit] Crash Reporting
+
+---
+
+#  Crash Reporting
+
+- クラッシュレポート
+- ベータ
+- 無料
+- iOS, Android
+
+---
+
+## 導入
+
+```gradle
+    compile 'com.google.firebase:firebase-crash:9.6.0'
+```
+
+---
+
+![inline](img/crash.png)
+
+---
+
+# [fit] Remote Config
+
+---
+
+# Remote Config
+
+- クラウドでモバイルアプリの設定値を管理できるサービス
+- iOS, Android
+- 無料
+
+---
+
+## 導入
+
+```
+compile 'com.google.firebase:firebase-config:9.6.1'
+```
+
+---
+
+## デフォルト値の設定
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>test</key>
+        <value>てす</value>
+    </entry>
+</defaultsMap>
+```
+
+---
+
+```java
+FirebaseRemoteConfig remoteConfig;
+
+remoteConfig = FirebaseRemoteConfig.getInstance();
+        //デベロッパーモード指定
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .build();
+        remoteConfig.setConfigSettings(configSettings);
+        //デフォルトの値を読み込む
+        remoteConfig.setDefaults(R.xml.remote_config_defaults);
+
+        remoteConfig.fetch(43200)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            //値を反映
+                            remoteConfig.activateFetched();
+                        } else {
+                            //fetch失敗
+                        }
+                    }
+                });
+
+```
+
+---
+
+![inline](img/config.png)
+
+---
+
+#[fit] App Indexing
+
+---
+
+# App Indexing
+
+- ウェブサイトとアプリを紐付ける
+- 無料
+- iOS, Android
+
+---
+
+#[fit] Dynamic Links
+
+---
+
+# Dynamic Links
+
+- アプリのインストール促進
+- 無料
+- iOS, Android
+
+---
+
+#[fit] Invites
+
+---
+
+# Invites
+
+- シェア機能
+- 無料
+- iOS, Android
+
+---
+
+# [fit] まとめ
+
+---
+
+# [fit] Firebase便利
+
+---
+
+というか、今回まとめるの結構疲れた...
+
+---
+
+# [fit] ご清聴、ありがとうございました！
+
+---

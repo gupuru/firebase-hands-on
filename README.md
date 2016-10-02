@@ -67,12 +67,54 @@
 
 ## Hosting
 
+- 本家
+
+  - https://firebase.google.com/docs/hosting/
+
+- 日本語の解説サイト
+  
+  - http://qiita.com/gupuru/items/25a6722f6f802d3a5250
+
 ## Crash Reporting
+
+- 本家
+
+  - https://firebase.google.com/docs/crash/
+
+- 日本語の解説サイト
+
+  - http://qiita.com/yamacraft/items/fd736203c29dfd3c7050
+  - http://llcc.hatenablog.com/entry/2016/05/21/130359
 
 ## Remote Config
 
+- 本家
+
+  - https://firebase.google.com/docs/remote-config/
+
+- 日本語の解説サイト
+
+  - http://dev.classmethod.jp/smartphone/firebase-remote-config/
+  - http://qiita.com/hymmr/items/2fc647db04d3861cd17b
+
 ## App Indexing
 
+- 本家
+
+ - https://firebase.google.com/docs/app-indexing/
+ 
 ## Dynamic Links
 
+- 本家
+  
+  - https://firebase.google.com/docs/dynamic-links/
+
+- 日本語の解説サイト
+  
+  - http://tech.furyu.jp/blog/?p=4850
+
 ## Invites
+
+- 本家
+
+  - https://firebase.google.com/docs/invites/
