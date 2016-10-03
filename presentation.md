@@ -28,9 +28,9 @@
 # Firebase
 
 - mBaaS
+- アプリやWeb開発に必要な機能が数多く提供されている
 - Googleが運営しているサービス
 - 2011年スタート(2014年後半にGoogleが買収)
-- アプリやWeb開発に必要なものを数多く提供
 - 無料でつかえるものが多い
 
 ---
@@ -51,18 +51,22 @@
 
 ---
 
-- モバイルアプリに特化した Google アナリティクスみたいなものです。
+#  Analytics
+
+- モバイルアプリに特化した Google アナリティクスみたいなもの
 - イベント型分析ツール
 - 無料
 - iOS, Android
 
 ---
 
+## iOSの導入
+
 ```
 pod 'Firebase/Core'
 ```
 
-```
+```swift
 import UIKit
 import Firebase
 
@@ -83,6 +87,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 --- 
 
+## Androidの導入
+
+```gradle
+compile 'com.google.firebase:firebase-core:9.6.1'
+```
+
+```java
+public class MainActivity extends AppCompatActivity {
+ 
+    private final MainActivity self = this;
+    private FirebaseAnalytics mFirebaseAnalytics;
+ 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+    }
+     
+}
+
+```
+
+---
+
 ![inline](img/analytics.png)
 
 ---
@@ -100,25 +129,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 ---
 
-```gradle
-apply plugin: 'com.android.application'
-
-dependencies {
-    compile 'com.google.firebase:firebase-messaging:9.6.0'
-}
-apply plugin: 'com.google.gms.google-services'
-```
-
---- 
-
-## token取得
-
-```java
-FirebaseInstanceId.getInstance().getToken();
-```
-
----
-
 ## Notification Message
 
 ```js
@@ -133,7 +143,7 @@ FirebaseInstanceId.getInstance().getToken();
 ```
 
 ```
-curl --header "Authorization: key=AIzaSyDGrPny1Cfb2m4cXzrSUoeguQidTc7xzs8" \
+curl --header "Authorization: key=...guQidTc7xzs8" \
      --header Content-Type:"application/json" \
      https://fcm.googleapis.com/fcm/send \
      -d "{\"to\": \"...ifS-oaJevN_VwU0Y\",\"priority\":\"high\",\"notification\": {\"title\": \"this is title\", \"body\": \"this is body\"}}"
@@ -155,12 +165,60 @@ curl --header "Authorization: key=AIzaSyDGrPny1Cfb2m4cXzrSUoeguQidTc7xzs8" \
 ```
 
 ```
-curl --header "Authorization: key=AIzaSyDGrPny1Cfb2m4cXzrSUoeguQidTc7xzs8" \
+curl --header "Authorization: key=...guQidTc7xzs8" \
      --header Content-Type:"application/json" \
      https://fcm.googleapis.com/fcm/send \
      -d "{\"to\": \"...aJevN_VwU0Y\",\"priority\":\"high\",\"data\": {\"custom_title\": \"this is custom title\", \"custom_body\": \"this is custom body\", \"icon\": \"ic_stat_ic_notification\"}}"
 
 ```
+
+---
+
+## Androidの導入
+
+```gradle
+compile 'com.google.firebase:firebase-messaging:9.6.1'
+```
+
+--- 
+
+## token取得
+
+```java
+FirebaseInstanceId.getInstance().getToken();
+```
+
+---
+
+## 通知のハンドリング
+
+```java
+public class MyFirebaseMessagingService extends FirebaseMessagingService {
+
+    public void onMessageReceived(RemoteMessage remoteMessage) {
+
+        Log.d(TAG, "From: " + remoteMessage.getFrom());
+
+        if (remoteMessage.getData() != null) {
+            //data
+        }
+
+        if (remoteMessage.getNotification() != null) {
+            //notification
+        }
+
+    }
+}
+```
+
+```xml
+<service
+    android:name=".MyFirebaseMessagingService">
+    <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+    </intent-filter>
+</service>
+````
 
 ---
 
@@ -199,30 +257,32 @@ curl --header "Authorization: key=AIzaSyDGrPny1Cfb2m4cXzrSUoeguQidTc7xzs8" \
 
 ---
 
+## Androidの導入(firebase UI)
+
 ```gradle
 compile 'com.firebaseui:firebase-ui-auth:0.6.0'
 ```
 
 ```java
- FirebaseAuth auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() != null) {
-            //ログイン済み
-        } else {
-          startActivityForResult(
-                    AuthUI.getInstance().createSignInIntentBuilder().build(),
-                    RC_SIGN_IN);
-        }
+FirebaseAuth auth = FirebaseAuth.getInstance();
+if (auth.getCurrentUser() != null) {
+    //ログイン済み
+} else {
+    startActivityForResult(
+            AuthUI.getInstance().createSignInIntentBuilder().build(),
+            RC_SIGN_IN);
+}
 ```
 
 ```java
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
-            if (resultCode == RESULT_OK) {
-                // ログイン成功
-            }
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == RC_SIGN_IN) {
+        if (resultCode == RESULT_OK) {
+            // ログイン成功
         }
     }
+}
 ```
 ---
 
@@ -243,9 +303,7 @@ compile 'com.firebaseui:firebase-ui-auth:0.6.0'
 
 ---
 
-![inline](img/database_rule.png)
-
----
+## iOSの導入
 
 ```
 pod 'Firebase/Database'
@@ -315,10 +373,31 @@ class ViewController: UIViewController {
 
 ---
 
+## iOSの導入
+
 ```ruby
 pod 'Firebase/Storage'
 ```
-### あとは他と同じ
+
+```swift
+import UIKit
+import Firebase
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+    var window: UIWindow?
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        //追加
+        FIRApp.configure()
+        return true
+    }
+
+}
+
+```
+
 ---
 
 ## アップロード
@@ -444,10 +523,10 @@ firebase open
 
 ---
 
-## 導入
+## Androidの導入
 
 ```gradle
-    compile 'com.google.firebase:firebase-crash:9.6.0'
+compile 'com.google.firebase:firebase-crash:9.6.1'
 ```
 
 ---
@@ -468,7 +547,7 @@ firebase open
 
 ---
 
-## 導入
+## Androidの導入
 
 ```
 compile 'com.google.firebase:firebase-config:9.6.1'
@@ -493,27 +572,27 @@ compile 'com.google.firebase:firebase-config:9.6.1'
 ```java
 FirebaseRemoteConfig remoteConfig;
 
-remoteConfig = FirebaseRemoteConfig.getInstance();
-        //デベロッパーモード指定
-        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG)
-                .build();
-        remoteConfig.setConfigSettings(configSettings);
-        //デフォルトの値を読み込む
-        remoteConfig.setDefaults(R.xml.remote_config_defaults);
+remoteConfig = FirebaseRemoteConfig.getInstansce();
+//デベロッパーモード指定
+FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+        .setDeveloperModeEnabled(BuildConfig.DEBUG)
+        .build();
+remoteConfig.setConfigSettings(configSettings);
+//デフォルトの値を読み込む
+remoteConfig.setDefaults(R.xml.remote_config_defaults);
 
-        remoteConfig.fetch(43200)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            //値を反映
-                            remoteConfig.activateFetched();
-                        } else {
-                            //fetch失敗
-                        }
-                    }
-                });
+remoteConfig.fetch(43200)
+        .addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    //値を反映
+                    remoteConfig.activateFetched();
+                } else {
+                    //fetch失敗
+                }
+            }
+        });
 
 ```
 
@@ -535,23 +614,23 @@ remoteConfig = FirebaseRemoteConfig.getInstance();
 
 ---
 
-##　ディープリンクの設定
+##　ディープリンクの設定(Andoirdの場合)
 
 ```xml
- <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<activity android:name=".MainActivity">
+    <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+        <category android:name="android.intent.category.LAUNCHER" />
 
-                <action android:name="android.intent.action.VIEW" />
-                <data android:scheme="https"
-                    android:host="fir-sample-51a1e.firebaseapp.com" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+        <action android:name="android.intent.action.VIEW" />
+        <data android:scheme="https"
+            android:host="fir-sample-51a1e.firebaseapp.com" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
 
-            </intent-filter>
-        </activity>
+    </intent-filter>
+</activity>
 ```
 
 ---
@@ -576,9 +655,9 @@ remoteConfig = FirebaseRemoteConfig.getInstance();
 
 ---
 
-## 導入
+## Androidの導入
 
-```
+```gradle
 compile 'com.google.firebase:firebase-invites:9.6.1'
 ```
 
@@ -600,9 +679,9 @@ compile 'com.google.firebase:firebase-invites:9.6.1'
 
 ---
 
-## 導入
+## Androidの導入
 
-```
+```gradle
 compile 'com.google.firebase:firebase-invites:9.6.1'
 ```
 
@@ -615,12 +694,12 @@ compile 'com.google.firebase:firebase-invites:9.6.1'
 ```java
 
 Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
-            .setMessage(getString(R.string.invitation_message))
-            .setDeepLink(Uri.parse(getString(R.string.invitation_deep_link)))
-            .setCustomImage(Uri.parse(getString(R.string.invitation_custom_image)))
-            .setCallToActionText(getString(R.string.invitation_cta))
-            .build();
-    startActivityForResult(intent, REQUEST_INVITE);
+        .setMessage(getString(R.string.invitation_message))
+        .setDeepLink(Uri.parse(getString(R.string.invitation_deep_link)))
+        .setCustomImage(Uri.parse(getString(R.string.invitation_custom_image)))
+        .setCallToActionText(getString(R.string.invitation_cta))
+        .build();
+startActivityForResult(intent, REQUEST_INVITE);
 
 ```
 
@@ -679,11 +758,15 @@ protected void onCreate(Bundle savedInstanceState) {
 
 ---
 
-# [fit] Firebase便利
+# [fit] Firebase便利だぞ`(･ω･)b`
 
 ---
 
-## というか、今回まとめるの結構疲れた...
+# [fit] 最後に言い忘れたことが...
+
+---
+
+# [fit] 社長の名前は、ハナちゃんです（笑）
 
 ---
 
