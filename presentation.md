@@ -286,6 +286,39 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 ```
 ---
 
+## Webの場合
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Firebase ui sample</title>
+   <!-- firebaseのあれを貼ってここに -->
+    <script src="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.css" />
+    <script type="text/javascript">
+      // FirebaseUI config.
+      var uiConfig = {
+        'signInSuccessUrl': '成功後のurl',
+        'signInOptions': [
+          firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+          firebase.auth.EmailAuthProvider.PROVIDER_ID
+        ],
+      };
+      var ui = new firebaseui.auth.AuthUI(firebase.auth());
+      ui.start('#firebaseui-auth-container', uiConfig);
+    </script>
+  </head>
+  <body>
+    <div id="firebaseui-auth-container"></div>
+  </body>
+</html>
+
+```
+
+---
+
 ![inline](img/auth_db.png)
 
 ---
