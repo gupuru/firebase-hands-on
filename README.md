@@ -1,6 +1,13 @@
-# firebase-hands-on
+# Firebase勉強会 @福岡 #0
 
-参考サイト集
+## 公式サンプル
+
+- iOS
+ - https://github.com/firebase/quickstart-ios
+- Android
+ - https://github.com/firebase/quickstart-android
+- Web
+ - https://github.com/firebase/quickstart-js
 
 ## Analytics
 
