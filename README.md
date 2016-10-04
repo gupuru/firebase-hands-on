@@ -1,5 +1,9 @@
 # Firebase勉強会 @福岡 #0
 
+## スライド
+
+- https://speakerdeck.com/gupuru/firebasemian-qiang-hui-zi-liao
+
 ## 公式サンプル
 
 - iOS
